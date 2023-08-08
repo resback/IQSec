@@ -40,7 +40,7 @@ namespace IQSec_PT.Services
                     emailMessage.Subject = subject;
 
                     BodyBuilder emailBodyBuilder = new BodyBuilder();
-                    emailBodyBuilder.TextBody = message;
+                    emailBodyBuilder.HtmlBody = message;
 
                     emailMessage.Body = emailBodyBuilder.ToMessageBody();
 
