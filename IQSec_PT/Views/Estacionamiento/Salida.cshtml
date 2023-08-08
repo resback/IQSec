@@ -1,0 +1,48 @@
+﻿@model IQSec_PT.Models.Estacionamiento
+
+@{
+    ViewData["Title"] = "Registrar Salida";
+}
+
+<h1>Salida </h1>
+
+<h4>Confirme la salida del vehículo</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Salida">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+
+            <input type="hidden" id="hfestacionamientoID" name="estacionamientoID" asp-for="estacionamientoID" />
+
+            <div class="form-group">
+                <input type="submit" value="Confirmar salida" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="mt-3">
+    <a asp-action="Index">Cancelar</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script>
+    // https://localhost:7106/Vehiculos/getVehiculos
+    $.ajax({
+        url: "/Vehiculos/getVehiculos",
+        type: 'GET',
+        dataType: 'json', // added data type
+        success: function (res) {
+            console.log(res);
+          
+            $.each(res, function (key, value) {
+                $("#placas").append(`<option value="${value.placas}">${value.placas}</option>`);
+            });
+        }
+    });
+</script>

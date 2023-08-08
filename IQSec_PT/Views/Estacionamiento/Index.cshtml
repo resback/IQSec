@@ -1,0 +1,101 @@
+﻿@model IEnumerable<IQSec_PT.Models.Estacionamiento>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<script src="~/filesaver.js/filesaver.min.js"></script>
+    <script src="~/filesaver.js/filesaver.js"></script>
+    <script src="~/tableexport/js/tableexport.min.js"></script>
+    <script src="~/tableexport/js/tableexport.js"></script>
+    <link href="~/tableexport/css/tableexport.min.css" rel="stylesheet" />
+    <link href="~/tableexport/css/tableexport.css" rel="stylesheet" />
+ 
+<h1>Registros estacionamientos</h1>
+
+<p>
+    <a asp-action="Create">Registrar entrada</a>
+
+    <input type="button" style="display:none;" onclick="tableExporttoExcel('tblExporttoExcel','W3C Example Table)" value="Export to Excel" />
+</p>
+<div id="Estacionamiento">
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+              Núm. Placa
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.entrada)
+            </th>
+           
+
+            <th>
+                @Html.DisplayNameFor(model => model.salida)
+            </th>
+
+
+            <th>
+               Cantidad a pagar
+            </th>
+
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.placas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.entrada)
+            </td>
+            
+            <td>
+                    @Html.DisplayFor(modelItem => item.salida)
+            </td>
+                <td>
+                    @{
+                        if (item.salida != null)
+                        {
+
+                            TimeSpan ts = item.entrada - (DateTime)item.salida;
+                            var minutos = (int)(@ts.TotalMinutes * -1);
+                            var Pagar = 0.5 * minutos;
+
+                            <span> $@Pagar (@minutos min) </span>
+                        }
+                    }
+                </td>
+            <td>@{
+                        if (item.salida == null)
+                        {
+                             <a asp-action="Salida" asp-route-id="@item.estacionamientoID">Registrar salida</a> 
+                        }
+                   }
+            </td>
+        </tr>
+            }
+    </tbody>
+</table>
+
+
+</div>
+<form asp-action="ExporttoExcel" asp-controller="Estacionamiento" method="post">
+    <input type="hidden" name="HtmlTable" />
+    <input type="submit" id="btnsubmit" value="Export to Excel" class="btn btn-primary" />
+</form>
+
+                        <script>
+ 
+       $(function() {
+ 
+           $("#btnsubmit").click(function () {
+ 
+               $("input[name='HtmlTable']").val($("#Estacionamiento").html());
+           });
+ 
+       });
+   </script>

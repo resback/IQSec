@@ -1,0 +1,52 @@
+﻿@model IQSec_PT.Models.Estacionamiento
+
+@{
+    ViewData["Title"] = "Registrar Entrada";
+}
+
+<h1>Registrar entrada de vehículo</h1>
+
+<h4>Estacionamiento</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="placas" class="control-label"></label>
+                <!--<input asp-for="placas" class="form-control" /> -->
+                <select id="placas" asp-for="placas"  class="form-control"><</select>
+                <span asp-validation-for="placas" class="text-danger"></span>
+            </div>
+
+           
+            <div class="form-group mt-2">
+                <input type="submit" value="Registrar entrada" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div>
+    <a asp-action="Index">Regresar a entradas</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script>
+    // https://localhost:7106/Vehiculos/getVehiculos
+    $.ajax({
+        url: "/Vehiculos/getVehiculos",
+        type: 'GET',
+        dataType: 'json', // added data type
+        success: function (res) {
+            console.log(res);
+          
+            $.each(res, function (key, value) {
+                $("#placas").append(`<option value="${value.placas}">${value.placas}</option>`);
+            });
+        }
+    });
+</script>
